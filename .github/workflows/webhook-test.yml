@@ -1,0 +1,21 @@
+name: Test Webhook Notification
+
+# 1. This event allows you to run the workflow manually from GitHub
+on:
+  workflow_dispatch:
+
+jobs:
+  send-webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send POST Request to Webhook
+        run: |
+          curl -X POST "${{ secrets.WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "event": "manual_test",
+              "status": "success",
+              "message": "GitHub Actions workflow run completed successfully!",
+              "actor": "${{ github.actor }}",
+              "repository": "${{ github.repository }}"
+            }'
